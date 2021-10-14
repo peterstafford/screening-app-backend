@@ -1,0 +1,6 @@
+{
+  "db": "mongodb+srv://uzairaziz:dot123@cluster0.05l4v.mongodb.net/test",
+  "jwtPrivateKey": "SomePrivateKey",
+  "email": "info@safebusinesssolutions.com",
+  "password": "2020AI$fun"
+}

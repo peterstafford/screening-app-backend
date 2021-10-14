@@ -1,0 +1,21 @@
+h1,
+h2,
+p {
+  text-align: center;
+}
+.button-class {
+  text-align: center;
+}
+
+.button-class a {
+  justify-content: center;
+  background-color: #6b92c8;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 25px;
+  padding: 10px 25px;
+}
+.heading {
+  border-bottom: 3px solid grey;
+}
