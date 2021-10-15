@@ -21,6 +21,14 @@ router.get("/", auth, async function (req, res, next) {
 
   return res.send(user);
 });
+router.get("/single-user/:id", auth, async function (req, res, next) {
+  let page = Number(req.query.page ? req.query.page : 1);
+  let perPage = Number(req.query.perPage ? req.query.perPage : 100);
+  let skipRecords = perPage * (page - 1);
+  let user = await User.findById(req.params.id);
+
+  return res.send(user);
+});
 
 /* Add New User . */
 router.post("/", async (req, res) => {
@@ -65,9 +73,24 @@ router.get("/:id", async (req, res) => {
     if (!user) return res.status(400).send("User with given id is not present");
     user.recieveEmail = "No";
     await user.save();
-    return res.redirect("https://screening-app-frontend.web.app/opt-out");
+    return res.redirect(
+      "https://rmhcsdwellness.safebusinesssolutions.com/opt-out"
+    );
   } catch {
     return res.status(400).send("Invalid Id"); // when id is inavlid
+  }
+});
+
+router.put("/:id", auth, async (req, res) => {
+  try {
+    let user = await User.findById(req.params.id);
+    console.log(user);
+    if (!user) return res.status(400).send("User with given id is not present");
+    user = extend(user, req.body);
+    await user.save();
+    return res.send(user);
+  } catch {
+    return res.status(400).send("User Question Id"); // when id is inavlid
   }
 });
 

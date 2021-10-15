@@ -77,7 +77,7 @@ router.put("/:id", auth, async (req, res) => {
     if (duplicateUser) {
       return res
         .status(400)
-        .send("Admin with Email Address Exsist Enter A Diifernt Email Addres"); // when there is no id in db
+        .send("Admin with Email Address Exsist Enter A Differnt Email Addres"); // when there is no id in db
     } else {
       let admin = await Admin.findById(req.params.id);
       console.log(admin);
