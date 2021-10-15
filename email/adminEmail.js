@@ -23,7 +23,7 @@ const sendAdminEmail = async (subject, text) => {
     from: "RMHCSD - Ronald McDonald House Charities - San Diego <no-reply@blog.com>",
     to: sendAdminEmail,
     subject: "Wellness Screening Alert❗️❗️❗️ ⚠️",
-    html: `<h4>Please follow up with the following  on Wellness Screening. ${text} </h4>`,
+    html: `<h4>Please follow up with the following party on Wellness Screening. ${text} </h4>`,
   };
 
   transporter.sendMail(message, function (err, info) {
