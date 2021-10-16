@@ -18,7 +18,7 @@ const emailSend = function () {
     },
   });
 
-  cron.schedule("00 00 * * *", async () => {
+  cron.schedule("* * * * *", async () => {
     let user = await User.find();
     let date = new Date();
     let FDate = moment(date, "hh").format("YYYY-MM-DD LT");
@@ -62,6 +62,7 @@ const emailSend = function () {
                   ID: `${item._id}`,
                   FDATE: `${FDate}`,
                   FAMILYMEMBER: `${familyMember.familyDetails}`,
+                  USERNAME: `${item.firstName} ${item.lastName}`,
                 },
               })
               .then(() =>
