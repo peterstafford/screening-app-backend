@@ -36,6 +36,34 @@ router.post("/", auth, async (req, res) => {
   return res.send(_.pick(admin, ["firstName", "lastName", "email"]));
 });
 
+// Update admin
+router.put("/update-admin/:id", auth, async (req, res) => {
+  try {
+    let admin = await Admin.findById(req.params.id);
+    console.log(admin);
+    if (!admin)
+      return res.status(400).send("Admin with given id is not present");
+    console.log("request Nody", req.body.password);
+    console.log("Admin password", admin.password);
+
+    if (req.body.password !== admin.password) {
+      console.log("request Body shgahshahs", req.body.password);
+      console.log("Admin password", admin.password);
+      admin = extend(admin, req.body);
+      await admin.generateHashedPassword();
+      await admin.save();
+    } else {
+      admin = extend(admin, req.body);
+      await admin.save();
+    }
+
+    return res.send(admin);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send("Invalid ID"); // when id is inavlid
+  }
+});
+
 // Sign In
 router.post("/login", async (req, res) => {
   console.log(req.body);
