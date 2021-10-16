@@ -81,7 +81,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     let user = await User.findById(req.params.id);
     console.log(user);
