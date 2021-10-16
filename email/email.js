@@ -18,7 +18,7 @@ const emailSend = function () {
     },
   });
 
-  cron.schedule("* * * * *", async () => {
+  cron.schedule("00 00 * * *", async () => {
     let user = await User.find();
     let date = new Date();
     let FDate = moment(date, "hh").format("YYYY-MM-DD LT");
