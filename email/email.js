@@ -62,6 +62,7 @@ const emailSend = function () {
                   ID: `${item._id}`,
                   FDATE: `${FDate}`,
                   FAMILYMEMBER: `${familyMember.familyDetails}`,
+                  USERNAME: `${item.firstName} ${item.lastName}`,
                 },
               })
               .then(() =>
