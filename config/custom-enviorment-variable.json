@@ -1,6 +1,11 @@
 {
-  "db": "mongodb+srv://uzairaziz:dot123@cluster0.05l4v.mongodb.net/test",
   "jwtPrivateKey": "SomePrivateKey",
   "email": "info@safebusinesssolutions.com",
-  "password": "2020AI$fun"
+  "password": "2020AI$fun",
+  "username": "doadmin",
+  "passwordMongoDb": "0ntNs8Pp659T47W1",
+  "host": "db-mongodb-nyc3-49774-a795ffcb.mongo.ondigitalocean.com",
+  "port": "27017",
+  "database": "admin",
+  "protocol": "mongodb+srv"
 }

@@ -4,7 +4,6 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
-
 var mongoose = require("mongoose");
 var config = require("config");
 var { emailSend } = require("./email/email");
@@ -64,10 +63,17 @@ app.use(function (err, req, res, next) {
 emailSend();
 
 mongoose
-  .connect(config.get("db"), {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    `mongodb+srv://${config.get("username")}:${config.get(
+      "passwordMongoDb"
+    )}@${config.get(
+      "host"
+    )}/screeningSystem?authSource=admin&replicaSet=db-mongodb-nyc3-49774&tls=true&tlsCAFile=certificate/ca-certificate.crt`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("Connection Established");
   })
