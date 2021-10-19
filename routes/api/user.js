@@ -30,6 +30,39 @@ router.get("/single-user/:id", async function (req, res, next) {
   return res.send(user);
 });
 
+/* Add New User by admin. */
+router.post("/add", async (req, res) => {
+  if (req.body.userId === null || !req.body.userId) {
+    console.log("body", req.body);
+    let user = await User.findOne({
+      email: req.body.email,
+    });
+    if (user)
+      return res.status(400).send("User With Given Email Already Exists");
+    user = new User(req.body);
+    await user
+      .save()
+      .then((resp) => {
+        return res.send(user);
+      })
+      .catch((err) => {
+        return res.status(500).send({ error: err });
+      });
+  } else {
+    try {
+      let user = await User.findById(req.body.userId);
+      console.log(user);
+      if (!user)
+        return res.status(400).send("User with given id is not present");
+      user = extend(user, req.body);
+      await user.save();
+      return res.send(user);
+    } catch {
+      return res.status(400).send("Invalid Id"); // when id is inavlid
+    }
+  }
+});
+
 /* Add New User . */
 router.post("/", async (req, res) => {
   if (req.body.userId === null || !req.body.userId) {
@@ -65,7 +98,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-/* Update User . */
+/* Update User consent . */
 router.get("/:id", async (req, res) => {
   try {
     let user = await User.findById(req.params.id);
