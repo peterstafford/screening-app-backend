@@ -107,4 +107,18 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
+// Update User
+router.put("/:id", auth, async (req, res) => {
+  try {
+    let user = await User.findById(req.params.id);
+    console.log(user);
+    if (!user) return res.status(400).send("user with given id is not present");
+    user = extend(user, req.body);
+    await user.save();
+    return res.send(user);
+  } catch {
+    return res.status(400).send("Invalid Id"); // when id is inavlid
+  }
+});
+
 module.exports = router;
