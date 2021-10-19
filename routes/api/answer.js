@@ -38,7 +38,7 @@ router.get("/", auth, async (req, res) => {
 /*Add New Answers*/
 router.post("/", async (req, res) => {
   try {
-    let user = await User.findById(req.body.user);
+    // let user = await User.findById(req.body.user);
     // var currentTime = new Date();
     // var today = moment(currentTime).format("HH");
     // let answer = await Answer.find({
