@@ -18,13 +18,17 @@ const emailSend = function () {
     },
   });
 
-  cron.schedule("00 00 * * *", async () => {
+  cron.schedule("* * * * *", async () => {
     let user = await User.find();
     let date = new Date();
     let FDate = moment(date, "hh").format("YYYY-MM-DD LT");
+    let family = [];
     user
       .filter((item) => item.recieveEmail == "Yes")
       .map((item) => {
+        item.familyMembers.map((item) => {
+          family.push(item.familyDetails);
+        });
         const email = new Email({
           transport: transporter,
           send: true,
@@ -41,37 +45,38 @@ const emailSend = function () {
               ID: `${item._id}`,
               FDATE: `${FDate}`,
               USERNAME: `${item.firstName} ${item.lastName}`,
+              FAMILYMEMBER: family,
             },
           })
           .then(() => console.log(`email has been sent! ${item.email}`));
-        if (item.familyMembers[0].familyDetails != "") {
-          item.familyMembers.map((familyMember) => {
-            const email = new Email({
-              transport: transporter,
-              send: true,
-              preview: false,
-            });
-            email
-              .send({
-                template: `defaultEmail`,
-                message: {
-                  from: "RMHCSD - Ronald McDonald House Charities - San Diego <no-reply@blog.com>",
-                  to: `${item.email}`,
-                },
-                locals: {
-                  ID: `${item._id}`,
-                  FDATE: `${FDate}`,
-                  FAMILYMEMBER: `${familyMember.familyDetails}`,
-                  USERNAME: `${item.firstName} ${item.lastName}`,
-                },
-              })
-              .then(() =>
-                console.log(
-                  `email has been sent! ${familyMember.familyDetails}`
-                )
-              );
-          });
-        }
+        // if (item.familyMembers[0].familyDetails != "") {
+        //   item.familyMembers.map((familyMember) => {
+        //     const email = new Email({
+        //       transport: transporter,
+        //       send: true,
+        //       preview: false,
+        //     });
+        //     email
+        //       .send({
+        //         template: `defaultEmail`,
+        //         message: {
+        //           from: "RMHCSD - Ronald McDonald House Charities - San Diego <no-reply@blog.com>",
+        //           to: `${item.email}`,
+        //         },
+        //         locals: {
+        //           ID: `${item._id}`,
+        //           FDATE: `${FDate}`,
+        //           FAMILYMEMBER: `${familyMember.familyDetails}`,
+        //           USERNAME: `${item.firstName} ${item.lastName}`,
+        //         },
+        //       })
+        //       .then(() =>
+        //         console.log(
+        //           `email has been sent! ${familyMember.familyDetails}`
+        //         )
+        //       );
+        //   });
+        // }
       });
   });
 };
