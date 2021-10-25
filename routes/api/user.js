@@ -3,8 +3,8 @@ var router = express.Router();
 const { extend } = require("lodash");
 const { User } = require("../../model/user");
 const sendConsentFormEmail = require("../../email/sendConsentFormEmail");
+const emailAfterConsentForm = require("../../email/emailAfterConsentForm");
 
-sendConsentFormEmail;
 const auth = require("../../middlewares/auth");
 const admin = require("../../middlewares/admin");
 
@@ -55,7 +55,7 @@ router.post("/add", async (req, res) => {
       if (!user)
         return res.status(400).send("User with given id is not present");
       user = extend(user, req.body);
-      await user.save();
+      emailAfterConsentForm(req.body.email);
       return res.send(user);
     } catch {
       return res.status(400).send("Invalid Id"); // when id is inavlid
