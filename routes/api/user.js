@@ -43,6 +43,7 @@ router.post("/add", async (req, res) => {
     await user
       .save()
       .then((resp) => {
+        emailAfterConsentForm(req.body.email);
         return res.send(user);
       })
       .catch((err) => {
