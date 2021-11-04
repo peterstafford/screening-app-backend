@@ -32,6 +32,7 @@ router.get("/single-user/:id", async function (req, res, next) {
 
 /* Add New User by admin. */
 router.post("/add", async (req, res) => {
+  console.log("Console Value", req.body);
   if (req.body.userId === null || !req.body.userId) {
     console.log("body", req.body);
     let user = await User.findOne({
@@ -67,6 +68,7 @@ router.post("/add", async (req, res) => {
 
 /* Add New User . */
 router.post("/", async (req, res) => {
+  console.log("Console Value", req.body);
   if (req.body.userId === null || !req.body.userId) {
     console.log("body", req.body);
     let user = await User.findOne({
