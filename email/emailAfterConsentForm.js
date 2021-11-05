@@ -37,7 +37,7 @@ const emailAfterConsentForm = async function (emailUser) {
       locals: {
         ID: `${user[0]._id}`,
         FDATE: `${FDate}`,
-        USERNAME: `${user[0].firstName} ${user[0].lastName}`,
+        USERNAME: `${user[0].lastName} ${user[0].firstName}`,
       },
     })
     .then(() =>

@@ -44,7 +44,7 @@ const emailSend = function () {
             locals: {
               ID: `${item._id}`,
               FDATE: `${FDate}`,
-              USERNAME: `${item.firstName} ${item.lastName}`,
+              USERNAME: `${item.lastName} ${item.firstName} `,
               FAMILYMEMBER: family,
             },
           })
