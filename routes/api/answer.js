@@ -68,7 +68,6 @@ router.post("/", async (req, res) => {
         answer.AnswerThree = req.body.AnswerThree;
         answer.AnswerFour = req.body.AnswerFour;
         answer.LastName = req.body.LastName;
-        // answer.Name = req.body.Name;
         answer.Phone = req.body.Phone;
         answer.PersonComp = req.body.PersonComp;
         answer.Purpose = req.body.Purpose;
