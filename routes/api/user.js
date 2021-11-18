@@ -44,7 +44,9 @@ router.post("/add", async (req, res) => {
     await user
       .save()
       .then((resp) => {
-        emailAfterConsentForm(req.body.email);
+        if (req.body.recieveEmail === "Yes") {
+          emailAfterConsentForm(req.body.email);
+        }
         return res.send(user);
       })
       .catch((err) => {
@@ -58,7 +60,9 @@ router.post("/add", async (req, res) => {
         return res.status(400).send("User with given id is not present");
       user = extend(user, req.body);
       await user.save();
-      emailAfterConsentForm(req.body.email);
+      if (req.body.recieveEmail === "Yes") {
+        emailAfterConsentForm(req.body.email);
+      }
       return res.send(user);
     } catch {
       return res.status(400).send("Invalid Id"); // when id is inavlid
@@ -125,7 +129,9 @@ router.put("/:id", async (req, res) => {
     if (!user) return res.status(400).send("User with given id is not present");
     user = extend(user, req.body);
     await user.save();
-    emailAfterConsentForm(req.body.email);
+    if (user.recieveEmail === "Yes") {
+      emailAfterConsentForm(req.body.email);
+    }
     return res.send(user);
   } catch {
     return res.status(400).send("User Question Id"); // when id is inavlid
