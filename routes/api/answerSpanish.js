@@ -126,6 +126,19 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
+router.delete("/", auth, async (req, res) => {
+  try {
+    let answerSpanish = await AnswerSpanish.deleteMany({});
+    if (answerSpanish.deletedCount === 0) {
+      return res.status(400).send("No Records Found To Delete"); // when there is no id in db
+    } else {
+      return res.status(200).send("All Records Deleted Successfully"); // when everything is okay
+    }
+  } catch {
+    return res.status(400).send("Invalid Id"); // when id is inavlid
+  }
+});
+
 // Delete Answers
 router.delete("/monthly", async (req, res) => {
   let newDate = new Date();

@@ -132,6 +132,22 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+/* Delete All Users . */
+router.delete("/all-user", auth, async (req, res) => {
+  try {
+    let user = await User.deleteMany({});
+    console.log(user);
+    if (user.deletedCount === 0) {
+      return res.status(400).send("No User Found To Delete"); // when there is no id in db
+    } else {
+      return res.status(200).send("All Users Deleted Successfully"); // when everything is okay
+    }
+  } catch (err) {
+    console.log(err);
+    // return res.status(400).send("Invalid Id"); // when id is inavlid
+  }
+});
+
 /* Delete User . */
 router.delete("/:id", auth, async (req, res) => {
   try {
