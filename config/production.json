@@ -7,5 +7,8 @@
   "host": "db-mongodb-nyc3-49774-a795ffcb.mongo.ondigitalocean.com",
   "port": "27017",
   "database": "admin",
-  "protocol": "mongodb+srv"
+  "protocol": "mongodb+srv",
+  "cloud_name": "rhm-app", 
+  "api_key": "699518821868287", 
+  "api_secret": "EmkbK19wF4qGW7KQKE3bwTw2nSI" 
 }

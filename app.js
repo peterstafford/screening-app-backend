@@ -18,6 +18,7 @@ var apiAnswerSpanishRouter = require("./routes/api/answerSpanish");
 var apiPasswordReserRouter = require("./routes/api/passwordReset");
 var apiCurrentQuestionRouter = require("./routes/api/currentQuestion");
 var apiCurrentQuestionSpanishRouter = require("./routes/api/currentQuestionSpanish");
+var apiEvents = require("./routes/api/events");
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use("/answers-spanish", apiAnswerSpanishRouter);
 app.use("/password-reset", apiPasswordReserRouter);
 app.use("/current-question", apiCurrentQuestionRouter);
 app.use("/current-question-spanish", apiCurrentQuestionSpanishRouter);
+app.use("/events", apiEvents);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
