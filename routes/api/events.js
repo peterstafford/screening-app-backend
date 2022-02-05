@@ -23,6 +23,51 @@ router.get("/", async function (req, res, next) {
   return res.send(events);
 });
 
+router.get("/upcoming-week", async function (req, res, next) {
+  var date = new Date();
+  date.setDate(date.getDate()+7);
+
+  let page = Number(req.query.page ? req.query.page : 1);
+  let perPage = Number(req.query.perPage ? req.query.perPage : 100);
+  let skipRecords = perPage * (page - 1);
+  console.log(new Date());
+  let events = await Events.find({startingDate : {$gte : new Date() , $lte : date}}).sort({
+    createdAt: -1,
+  });
+
+  return res.send(events);
+});
+
+router.get("/past-week", async function (req, res, next) {
+  var date = new Date();
+  date.setDate(date.getDate()-7);
+
+  let page = Number(req.query.page ? req.query.page : 1);
+  let perPage = Number(req.query.perPage ? req.query.perPage : 100);
+  let skipRecords = perPage * (page - 1);
+  console.log(new Date());
+  let events = await Events.find({startingDate : {$gte : date , $lte : new Date()}}).sort({
+    createdAt: -1,
+  });
+
+  return res.send(events);
+});
+
+router.get("/upcoming-month", async function (req, res, next) {
+  var date = new Date();
+  date.setDate(date.getDate()+30);
+
+  let page = Number(req.query.page ? req.query.page : 1);
+  let perPage = Number(req.query.perPage ? req.query.perPage : 100);
+  let skipRecords = perPage * (page - 1);
+  console.log(new Date());
+  let events = await Events.find({startingDate : {$gte : new Date() , $lte : date}}).sort({
+    createdAt: -1,
+  });
+
+  return res.send(events);
+});
+
 /* Add Event . */
 router.post("/", auth, upload.single("image"), async (req, res) => {
   let events = await Events.findOne({ title: req.body.title });
