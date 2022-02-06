@@ -68,6 +68,18 @@ router.get("/upcoming-month", async function (req, res, next) {
   return res.send(events);
 });
 
+router.get("/single-event/:id", async function (req, res, next) {
+  let page = Number(req.query.page ? req.query.page : 1);
+  let perPage = Number(req.query.perPage ? req.query.perPage : 100);
+  let skipRecords = perPage * (page - 1);
+  console.log(new Date());
+  let events = await Events.findById(req.params.id).sort({
+    createdAt: -1,
+  });
+
+  return res.send(events);
+});
+
 /* Add Event . */
 router.post("/", auth, upload.single("image"), async (req, res) => {
   let events = await Events.findOne({ title: req.body.title });
