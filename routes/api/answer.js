@@ -232,7 +232,6 @@ router.delete("/monthly", auth, async (req, res) => {
   var last_date = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
   // console.log("mnth", last_date);
   // console.log("mnth1", first_date);
-
   try {
     let answer1 = await Answer.deleteMany({
       createdAt: {
@@ -240,7 +239,7 @@ router.delete("/monthly", auth, async (req, res) => {
         $gte: first_date,
       },
     });
-    if (!answer1) {
+    if (answer1.deletedCount===0) {
       return res.status(400).send("No Records To Delete In Previous Month"); // when there is no id in db
     }
     return res.send(answer1); // when everything is okay

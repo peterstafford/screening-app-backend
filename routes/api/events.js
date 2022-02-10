@@ -25,13 +25,15 @@ router.get("/", async function (req, res, next) {
 
 router.get("/upcoming-week", async function (req, res, next) {
   var date = new Date();
-  date.setDate(date.getDate()+7);
+  date.setDate(date.getDate() + 7);
 
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 100);
   let skipRecords = perPage * (page - 1);
   console.log(new Date());
-  let events = await Events.find({startingDate : {$gte : new Date() , $lte : date}}).sort({
+  let events = await Events.find({
+    startingDate: { $gte: new Date(), $lte: date },
+  }).sort({
     createdAt: -1,
   });
 
@@ -40,13 +42,15 @@ router.get("/upcoming-week", async function (req, res, next) {
 
 router.get("/past-week", async function (req, res, next) {
   var date = new Date();
-  date.setDate(date.getDate()-7);
+  date.setDate(date.getDate() - 7);
 
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 100);
   let skipRecords = perPage * (page - 1);
   console.log(new Date());
-  let events = await Events.find({startingDate : {$gte : date , $lte : new Date()}}).sort({
+  let events = await Events.find({
+    startingDate: { $gte: date, $lte: new Date() },
+  }).sort({
     createdAt: -1,
   });
 
@@ -55,13 +59,15 @@ router.get("/past-week", async function (req, res, next) {
 
 router.get("/upcoming-month", async function (req, res, next) {
   var date = new Date();
-  date.setDate(date.getDate()+30);
+  date.setDate(date.getDate() + 30);
 
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 100);
   let skipRecords = perPage * (page - 1);
   console.log(new Date());
-  let events = await Events.find({startingDate : {$gte : new Date() , $lte : date}}).sort({
+  let events = await Events.find({
+    startingDate: { $gte: new Date(), $lte: date },
+  }).sort({
     createdAt: -1,
   });
 
@@ -82,58 +88,77 @@ router.get("/single-event/:id", async function (req, res, next) {
 
 /* Add Event . */
 router.post("/", auth, upload.single("image"), async (req, res) => {
+  if (req.fileValidationError) {
+    return res
+      .status(400)
+      .send("Invalid File Format! Make sure file is a JPG , JPEG or PNG");
+  }else{
   let events = await Events.findOne({ title: req.body.title });
   if (events)
     return res.status(400).send("Event With Same Title Already Exsists");
-  const result = await cloudinary.uploader.upload(req.file.path);
-  events = new Events({
-    title: req.body.title,
-    description: req.body.description,
-    image: result.secure_url,
-    startingDate: req.body.startingDate,
-    endingDate: req.body.endingDate,
-  });
+  if (!req.body.image) {
+    const result = await cloudinary.uploader.upload(req.file.path);
+    events = new Events({
+      title: req.body.title,
+      description: req.body.description,
+      image: result.secure_url,
+      startingDate: req.body.startingDate,
+      endingDate: req.body.endingDate,
+    });
+  } else {
+    events = new Events({
+      title: req.body.title,
+      description: req.body.description,
+      startingDate: req.body.startingDate,
+      endingDate: req.body.endingDate,
+    });
+  }
   events
     .save()
     .then((resp) => {
       return res.send(resp);
     })
     .catch((err) => {
-      console.log(err)  
+      console.log(err);
       return res.status(500).send({ error: err });
     });
+  }
 });
+
 
 // Update Events
 router.put("/:id", auth, upload.single("image"), async (req, res) => {
   try {
-    let events = await Events.findById(req.params.id);
-    console.log(events);
-    if (!events)
-      return res.status(400).send("Events with given id is not present");
-    console.log(req.body);
-    if (!req.body.image) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      events = extend(events, {
-        title: req.body.title,
-        description: req.body.description,
-        image: result.secure_url,
-        startingDate: req.body.startingDate,
-        endingDate: req.body.endingDate,
-      });
+    if (req.fileValidationError) {
+      return res
+        .status(400)
+        .send("Invalid File Format! Make sure file is a JPG , JPEG or PNG");
     } else {
-      events = extend(events, {
-        title: req.body.title,
-        description: req.body.description,
-        startingDate: req.body.startingDate,
-        endingDate: req.body.endingDate,
-       
-      });
+      let events = await Events.findById(req.params.id);
+      if (!events)
+        return res.status(400).send("Events with given id is not present");
+      if (!req.body.image) {
+        const result = await cloudinary.uploader.upload(req.file.path);
+        events = extend(events, {
+          title: req.body.title,
+          description: req.body.description,
+          image: result.secure_url,
+          startingDate: req.body.startingDate,
+          endingDate: req.body.endingDate,
+        });
+      } else {
+        events = extend(events, {
+          title: req.body.title,
+          description: req.body.description,
+          startingDate: req.body.startingDate,
+          endingDate: req.body.endingDate,
+        });
+      }
+      await events.save();
+      return res.send(events);
     }
-    await events.save();
-    return res.send(events);
   } catch (error) {
-    console.log(error);
+    console.log("ERRROr", error);
     return res.status(400).send("Invalid ID"); // when id is inavlid
   }
 });
