@@ -39,7 +39,7 @@ const emailSend = function () {
             template: `defaultEmail`,
             message: {
               from: "RMHCSD - Ronald McDonald House Charities - San Diego <no-reply@blog.com>",
-              to: `${item.email}`,
+              to: `syedsaroshfarrukh@gmail.com`,
             },
             locals: {
               ID: `${item._id}`,

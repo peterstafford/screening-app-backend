@@ -14,9 +14,10 @@ router.get("/", auth, async (req, res) => {
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 10);
   let skipRecords = perPage * (page - 1);
+  let year = new Date().getFullYear();
   let requestObject = {};
   let startMonth = req.query.startMonth ? req.query.startMonth : "";
-  var startDate = moment(2021 + "-" + startMonth + "-" + 02 + " 00:00:00");
+  var startDate = moment(year + "-" + startMonth + "-" + 02 + " 00:00:00");
   var endDate = startDate.clone().endOf("month");
   if (startMonth != "") {
     console.log("else", startMonth);
@@ -239,7 +240,7 @@ router.delete("/monthly", auth, async (req, res) => {
         $gte: first_date,
       },
     });
-    if (answer1.deletedCount===0) {
+    if (answer1.deletedCount === 0) {
       return res.status(400).send("No Records To Delete In Previous Month"); // when there is no id in db
     }
     return res.send(answer1); // when everything is okay
