@@ -10,8 +10,8 @@ const emailSend = function () {
   // let date_ob = new Date();
   // let Date = year + "-" + month + "-" + date;
   var transporter = nodemailer.createTransport({
-    host: "smtpout.secureserver.net",
-    port: 465,
+    host: "smtp.office365.com",
+    port: 587,
     auth: {
       user: config.get("email"),
       pass: config.get("password"),
@@ -37,9 +37,10 @@ const emailSend = function () {
         email
           .send({
             template: `defaultEmail`,
+
             message: {
-              from: "RMHCSD - Ronald McDonald House Charities - San Diego <no-reply@blog.com>",
-              to: `syedsaroshfarrukh@gmail.com`,
+              from: "RMHCSD - Ronald McDonald House Charities - San Diego <info@safebusinesssolutions.com>",
+              to: `${item.email}`,
             },
             locals: {
               ID: `${item._id}`,

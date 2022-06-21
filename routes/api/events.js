@@ -25,7 +25,7 @@ router.get("/", async function (req, res, next) {
 
 router.get("/upcoming-week", async function (req, res, next) {
   var date = new Date();
-  date.setDate(date.getDate() + 7);
+  date.setDate(date.getDate() - 200);
 
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 100);
@@ -42,7 +42,7 @@ router.get("/upcoming-week", async function (req, res, next) {
 
 router.get("/past-week", async function (req, res, next) {
   var date = new Date();
-  date.setDate(date.getDate() - 7);
+  date.setDate(date.getDate() - 200);
 
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 100);
@@ -59,7 +59,7 @@ router.get("/past-week", async function (req, res, next) {
 
 router.get("/upcoming-month", async function (req, res, next) {
   var date = new Date();
-  date.setDate(date.getDate() + 30);
+  date.setDate(date.getDate() + 365);
 
   let page = Number(req.query.page ? req.query.page : 1);
   let perPage = Number(req.query.perPage ? req.query.perPage : 100);
@@ -92,39 +92,38 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
     return res
       .status(400)
       .send("Invalid File Format! Make sure file is a JPG , JPEG or PNG");
-  }else{
-  let events = await Events.findOne({ title: req.body.title });
-  if (events)
-    return res.status(400).send("Event With Same Title Already Exsists");
-  if (!req.body.image) {
-    const result = await cloudinary.uploader.upload(req.file.path);
-    events = new Events({
-      title: req.body.title,
-      description: req.body.description,
-      image: result.secure_url,
-      startingDate: req.body.startingDate,
-      endingDate: req.body.endingDate,
-    });
   } else {
-    events = new Events({
-      title: req.body.title,
-      description: req.body.description,
-      startingDate: req.body.startingDate,
-      endingDate: req.body.endingDate,
-    });
-  }
-  events
-    .save()
-    .then((resp) => {
-      return res.send(resp);
-    })
-    .catch((err) => {
-      console.log(err);
-      return res.status(500).send({ error: err });
-    });
+    let events = await Events.findOne({ title: req.body.title });
+    if (events)
+      return res.status(400).send("Event With Same Title Already Exsists");
+    if (!req.body.image) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      events = new Events({
+        title: req.body.title,
+        description: req.body.description,
+        image: result.secure_url,
+        startingDate: req.body.startingDate,
+        endingDate: req.body.endingDate,
+      });
+    } else {
+      events = new Events({
+        title: req.body.title,
+        description: req.body.description,
+        startingDate: req.body.startingDate,
+        endingDate: req.body.endingDate,
+      });
+    }
+    events
+      .save()
+      .then((resp) => {
+        return res.send(resp);
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).send({ error: err });
+      });
   }
 });
-
 
 // Update Events
 router.put("/:id", auth, upload.single("image"), async (req, res) => {

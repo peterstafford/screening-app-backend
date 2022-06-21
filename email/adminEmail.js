@@ -7,8 +7,8 @@ const sendAdminEmail = async (subject, text) => {
   let date = new Date();
   let FDate = moment(date).format("MM-DD-YYYY");
   var transporter = nodemailer.createTransport({
-    host: "smtpout.secureserver.net",
-    port: 465,
+    host: "smtp.office365.com",
+    port: 587,
     auth: {
       user: config.get("email"),
       pass: config.get("password"),
@@ -20,7 +20,7 @@ const sendAdminEmail = async (subject, text) => {
     sendAdminEmail.push(item.email);
   });
   message = {
-    from: "RMHCSD - Ronald McDonald House Charities - San Diego <no-reply@blog.com>",
+    from: "RMHCSD - Ronald McDonald House Charities - San Diego <info@safebusinesssolutions.com>",
     to: sendAdminEmail,
     subject: "Wellness Screening Alert❗️❗️❗️ ⚠️",
     html: `<h4>Please follow up with the following party on Wellness Screening. ${text} </h4>`,

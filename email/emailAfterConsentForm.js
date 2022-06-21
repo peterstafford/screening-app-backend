@@ -10,8 +10,8 @@ const emailAfterConsentForm = async function (emailUser) {
   // let date_ob = new Date();
   // let Date = year + "-" + month + "-" + date;
   var transporter = nodemailer.createTransport({
-    host: "smtpout.secureserver.net",
-    port: 465,
+    host: "smtp.office365.com",
+    port: 587,
     auth: {
       user: config.get("email"),
       pass: config.get("password"),
@@ -31,7 +31,7 @@ const emailAfterConsentForm = async function (emailUser) {
     .send({
       template: `consentFormAfterEmail`,
       message: {
-        from: "RMHCSD - Ronald McDonald House Charities - San Diego <no-reply@blog.com>",
+        from: "RMHCSD - Ronald McDonald House Charities - San Diego <info@safebusinesssolutions.com>",
         to: emailUser,
       },
       locals: {
