@@ -10,6 +10,7 @@ const emailSend = function () {
   // let date_ob = new Date();
   // let Date = year + "-" + month + "-" + date;
   var transporter = nodemailer.createTransport({
+    maxConnections: "10000",
     host: "smtp.office365.com",
     port: 587,
     auth: {
