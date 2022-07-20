@@ -26,8 +26,8 @@ const emailSend = function () {
     let family = [];
     user
       .filter((item) => item.recieveEmail == "Yes")
-      .map((item) => {
-        item.familyMembers.map((item) => {
+      .map(async (item) => {
+        await item.familyMembers.map((item) => {
           family.push(item.familyDetails);
         });
         const email = new Email({
