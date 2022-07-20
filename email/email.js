@@ -35,7 +35,7 @@ const emailSend = function () {
           send: true,
           preview: false,
         });
-        email
+        await email
           .send({
             template: `defaultEmail`,
 
