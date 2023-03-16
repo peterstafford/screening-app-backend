@@ -26,7 +26,15 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use(cors());
+app.use(
+	cors({
+		origin: "*",
+
+		methods: ["GET", "POST"],
+
+		allowedHeaders: ["Content-Type"],
+	})
+);
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -48,40 +56,40 @@ app.use("/events", apiEvents);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+	next(createError(404));
 });
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+	// set locals, only providing error in development
+	res.locals.message = err.message;
+	res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+	// render the error page
+	res.status(err.status || 500);
+	res.render("error");
 });
 
 emailSend();
 
 mongoose
-  .connect(
-    `mongodb+srv://${config.get("username")}:${config.get(
-      "passwordMongoDb"
-    )}@${config.get(
-      "host"
-    )}/screeningSystem?authSource=admin&replicaSet=db-mongodb-nyc3-49774&tls=true&tlsCAFile=certificate/ca-certificate.crt`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => {
-    console.log("Connection Established");
-  })
-  .catch((err) => {
-    console.log(err);
-    console.log("Connection Not Established");
-  });
+	.connect(
+		`mongodb+srv://${config.get("username")}:${config.get(
+			"passwordMongoDb"
+		)}@${config.get(
+			"host"
+		)}/screeningSystem?authSource=admin&replicaSet=db-mongodb-nyc3-49774&tls=true&tlsCAFile=certificate/ca-certificate.crt`,
+		{
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		}
+	)
+	.then(() => {
+		console.log("Connection Established");
+	})
+	.catch((err) => {
+		console.log(err);
+		console.log("Connection Not Established");
+	});
 
 module.exports = app;
