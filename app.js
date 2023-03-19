@@ -28,11 +28,8 @@ app.set("view engine", "pug");
 
 app.use(
 	cors({
-		origin: "*",
-
-		methods: ["GET", "POST"],
-
-		allowedHeaders: ["Content-Type"],
+		origin: "https://rmhcsdwellness.safebusinesssolutions.com",
+		allowedHeaders: ["Content-Type", "x-auth-token"],
 	})
 );
 
