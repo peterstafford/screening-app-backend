@@ -81,7 +81,7 @@ router.post("/login", async (req, res) => {
 		config.get("jwtPrivateKey")
 	);
 
-	return res.send({ ...token, status: "ali try 1" });
+	return res.send(token);
 });
 
 router.put("/update-password/:id", auth, async (req, res) => {
