@@ -66,8 +66,6 @@ router.put("/update-admin/:id", auth, async (req, res) => {
 
 // Sign In
 router.post("/login", async (req, res) => {
-	console.log(req.body);
-	conosle.log("try 1 after commiting code");
 	let admin = await Admin.findOne({ email: req.body.email });
 	if (!admin) return res.status(400).send("Admin Not Registered");
 	let isValid = await bcrypt.compare(req.body.password, admin.password);
@@ -82,7 +80,8 @@ router.post("/login", async (req, res) => {
 		},
 		config.get("jwtPrivateKey")
 	);
-	return res.send(token);
+
+	return res.send({ ...token, status: "ali try 1" });
 });
 
 router.put("/update-password/:id", auth, async (req, res) => {
