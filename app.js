@@ -28,7 +28,7 @@ app.set("view engine", "pug");
 
 app.use(
 	cors({
-		origin: "*",
+		origin: "https://screening-app-5f7d0.web.app",
 		allowedHeaders: ["Content-Type", "x-auth-token"],
 	})
 );
